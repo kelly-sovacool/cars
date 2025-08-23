@@ -6,6 +6,9 @@ format:
     code-fold: true
 params:
   interactive: false
+engine: knitr
+execute:
+  message: false
 ---
 
 ```{r setup}
@@ -17,22 +20,22 @@ library(scales)
 library(tidyverse)
 theme_set(theme_bw())
 ```
-```{r data_gs4, eval=interactive}
+
+```{r data_gs4, eval=params$interactive}
 gs4_auth()
 cars <- read_sheet(
     'https://docs.google.com/spreadsheets/d/1uFAE4Ss_Yy6Ybp90YGXgQJfhAOiut1pyVKBmqc570F0'
 ) %>% mutate(make = as.character(make))
 cars %>% write_csv(here('data','cars.csv'))
 ```
-```{r data_load, eval=!interactive}
+```{r data_load, eval=!params$interactive}
 cars <- read_csv(here('data','cars.csv'))
 ```
-
 
 ```{r costs}
 ev_incentive <- 7500
 energy_price_per_kwh <- 0.25 # TODO look up our actual rate in electricity bill
-gas_price_per_gal <- 3
+gas_price_per_gal <- 3 # TODO find gas price predictions
 
 dav_commute_mi <- 30
 dav_days_commute_per_week <- 4
@@ -71,12 +74,24 @@ car_cost_over_time <- time_dat %>%
     bind_rows() %>% 
     group_by(make_model) %>% 
     mutate(total_cost = cumsum(cost_per_week) + purchase_cost)
+```
 
+## Car cost over time
 
+```{r plot_cost_time}
+vehicles <- car_cost_over_time %>% 
+    slice_max(date_week) %>% 
+    arrange(desc(total_cost)) %>% 
+    pull(make_model)
 car_cost_over_time %>% 
+    mutate(make_model = factor(make_model, levels = vehicles)) %>% 
     ggplot(aes(date_week, total_cost, color = make_model, group = make_model)) +
     geom_line() +
-    scale_color_brewer(type = 'qual')
+    #scale_color_brewer(type = 'qual') +
+    scale_color_viridis_d(option = 'viridis') +
+    guides(color = guide_legend(title = 'vehicle')) +
+    labs(x = '',
+         y = 'Total Cost')
 ```
 
 
