@@ -1,5 +1,5 @@
 ---
-title: "cars"
+title: "[cars](https://github.com/kelly-sovacool/cars/)"
 date: today
 format:
   html:
@@ -32,7 +32,7 @@ cars %>% write_csv(here('data','cars.csv'))
 cars <- read_csv(here('data','cars.csv'))
 ```
 
-```{r costs}
+```{r calc_costs}
 ev_incentive <- 7500
 energy_price_per_kwh <- 0.25 # TODO look up our actual rate in electricity bill
 gas_price_per_gal <- 3 # TODO find gas price predictions
@@ -43,7 +43,6 @@ road_trips_year <- 532 * 1 + # indy
     408 * 1 + # columbus
     580 * 1 # des plaines
 mileage_per_week <- dav_commute_mi * dav_days_commute_per_week + road_trips_year/52
-
 
 cars %<>% mutate(
     price_minus_incentives = case_when(
@@ -59,7 +58,9 @@ cars %<>% mutate(
     make_model = glue("{make} {model}"),
     purchase_cost = price_minus_incentives
 ) %>% 
-    filter(!is.na(battery_kWh | !is.na(mpg_combined)))
+    filter(!is.na(battery_kWh | !is.na(mpg_combined)),
+           make_model != 'Saturn Vue'
+           )
 
 n_years <- 8
 start_date <- ymd('2025-09-30')
@@ -87,8 +88,9 @@ car_cost_over_time %>%
     mutate(make_model = factor(make_model, levels = vehicles)) %>% 
     ggplot(aes(date_week, total_cost, color = make_model, group = make_model)) +
     geom_line() +
-    #scale_color_brewer(type = 'qual') +
-    scale_color_viridis_d(option = 'viridis') +
+    scale_color_brewer(palette = 'Dark2') +
+    #scale_color_viridis_d(option = 'viridis') +
+    scale_y_continuous(labels = label_currency()) +
     guides(color = guide_legend(title = 'vehicle')) +
     labs(x = '',
          y = 'Total Cost')
