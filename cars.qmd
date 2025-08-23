@@ -1,0 +1,82 @@
+---
+title: "cars"
+date: today
+format:
+  html:
+    code-fold: true
+params:
+  interactive: false
+---
+
+```{r setup}
+library(googlesheets4)
+library(glue)
+library(here)
+library(magrittr)
+library(scales)
+library(tidyverse)
+theme_set(theme_bw())
+```
+```{r data_gs4, eval=interactive}
+gs4_auth()
+cars <- read_sheet(
+    'https://docs.google.com/spreadsheets/d/1uFAE4Ss_Yy6Ybp90YGXgQJfhAOiut1pyVKBmqc570F0'
+) %>% mutate(make = as.character(make))
+cars %>% write_csv(here('data','cars.csv'))
+```
+```{r data_load, eval=!interactive}
+cars <- read_csv(here('data','cars.csv'))
+```
+
+
+```{r costs}
+ev_incentive <- 7500
+energy_price_per_kwh <- 0.25 # TODO look up our actual rate in electricity bill
+gas_price_per_gal <- 3
+
+dav_commute_mi <- 30
+dav_days_commute_per_week <- 4
+road_trips_year <- 532 * 1 + # indy
+    408 * 1 + # columbus
+    580 * 1 # des plaines
+mileage_per_week <- dav_commute_mi * dav_days_commute_per_week + road_trips_year/52
+
+
+cars %<>% mutate(
+    price_minus_incentives = case_when(
+        type == 'EV' ~ price_approx - ev_incentive,
+        type == 'plug-in hybrid' ~ price_approx - ev_incentive /
+            2,
+        TRUE ~ price_approx
+    ),
+    cost_per_mile = case_when(
+        type == 'EV' ~ battery_kWh * energy_price_per_kwh / range_mi,
+        str_detect(type, 'ICE') ~ gas_price_per_gal / mpg_combined
+    ),
+    make_model = glue("{make} {model}"),
+    purchase_cost = price_minus_incentives
+) %>% 
+    filter(!is.na(battery_kWh | !is.na(mpg_combined)))
+
+n_years <- 8
+start_date <- ymd('2025-09-30')
+time_dat <- start_date + weeks(1:(52 * n_years))
+
+car_cost_over_time <- time_dat %>% 
+    lapply(\(date_week) {
+        cars %>% 
+            mutate(date_week = date_week,
+                   cost_per_week = mileage_per_week * cost_per_mile)
+    }) %>% 
+    bind_rows() %>% 
+    group_by(make_model) %>% 
+    mutate(total_cost = cumsum(cost_per_week) + purchase_cost)
+
+
+car_cost_over_time %>% 
+    ggplot(aes(date_week, total_cost, color = make_model, group = make_model)) +
+    geom_line() +
+    scale_color_brewer(type = 'qual')
+```
+
+
