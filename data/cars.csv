@@ -1,4 +1,5 @@
 make,model,type,price_approx,year_max,range_mi,battery_kWh,mpg_city,mpg_highway,mpg_combined,test drive,notes,links
+Saturn,Vue,ICE manual,0,NA,NA,NA,NA,NA,23,NA,NA,NA
 Subaru,Crosstrek,ICE manual,25000,2023,NA,NA,22,29,25,2025-08-23T00:00:00Z,NA,NA
 Chevy,Equinox LT1,EV,35000,NA,319,85,NA,NA,NA,2025-08-23T00:00:00Z,$2k upgrade for heated seats & safety package,https://www.chevrolet.com/shopping/configurator/electric/2025/equinox-ev/equinox-ev/compare?buildCode=&radius=100&zipCode=48150
 Ford Mustang,Mach E Premium,EV,51680,NA,300,88,NA,NA,NA,NA,light grey seats,https://shop.ford.com/configure/mach-e/config/summary/Config%5B%7CFord%7CMache%7C2025%7C1%7C1.%7C300A.K3S..PR7...64M.~DBAAA_VS-LE.EAWD.99U.18D.PRE.%5D?intcmp=vhp-360cta-fbc&trim=st
@@ -9,4 +10,3 @@ Volvo,V60 T8 Polestar,plug-in hybrid,72345,NA,NA,NA,NA,NA,NA,NA,NA,NA
 Subaru,Solterra,NA,38495,NA,NA,NA,NA,NA,NA,NA,NA,NA
 Toyota,RAV4,plug-in hybrid,44565,NA,NA,NA,NA,NA,NA,NA,NA,NA
 Polestar,NA,EV,56400,NA,300,NA,NA,NA,NA,NA,NA,NA
-Saturn,Vue,ICE manual,0,NA,NA,NA,NA,NA,23,NA,NA,NA

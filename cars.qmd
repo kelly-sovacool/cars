@@ -9,6 +9,7 @@ params:
 engine: knitr
 execute:
   message: false
+dpi: 300
 ---
 
 ```{r setup}
