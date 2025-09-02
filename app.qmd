@@ -8,6 +8,7 @@ execute:
     message: false
     warning: false
 ---
+
 ```{r}
 #| context: setup
 library(glue)
@@ -92,7 +93,7 @@ output$cars <- renderTable(cars_dat())
 output$car_costs_plot <- renderPlotly({
     ggplotly(
       cars_costs_dat() %>% 
-        mutate(label = glue("{car}\n{round(miles,0)}\n${round(cost_at_mileage,2)}")) %>% 
+        mutate(label = glue("{car}\n{round(miles,0)} miles\n${round(cost_at_mileage,2)}")) %>% 
         ggplot(aes(
             miles, cost_at_mileage, color = car, group = car, label = label
             )) +
