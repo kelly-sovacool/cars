@@ -9,6 +9,7 @@ params:
 engine: knitr
 execute:
   message: false
+  warning: false
 dpi: 300
 ---
 
