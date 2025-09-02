@@ -1,3 +1,4 @@
 project:
   title: "cars"
-  render: cars.qmd
+  render:
+    - cars.qmd
