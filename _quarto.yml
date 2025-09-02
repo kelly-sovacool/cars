@@ -1,2 +1,3 @@
 project:
   title: "cars"
+  render: cars.qmd
