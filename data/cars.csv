@@ -2,7 +2,7 @@ make,model,type,price_approx,year_max,range_mi,battery_kWh,mpg_city,mpg_highway,
 Saturn,Vue,ICE manual,0,NA,NA,NA,NA,NA,23,NA,NA,NA
 Subaru,Crosstrek,ICE manual,25000,2023,NA,NA,22,29,25,2025-08-23T00:00:00Z,NA,NA
 Chevrolet,Equinox LT1,EV,35000,NA,319,85,NA,NA,NA,2025-08-23T00:00:00Z,$2k upgrade for heated seats & safety package,https://www.chevrolet.com/shopping/configurator/electric/2025/equinox-ev/equinox-ev/compare?buildCode=&radius=100&zipCode=48150
-Ford Mustang,Mach E Premium,EV no incentive,51680,NA,300,88,NA,NA,NA,NA,light grey seats,https://shop.ford.com/configure/mach-e/config/summary/Config%5B%7CFord%7CMache%7C2025%7C1%7C1.%7C300A.K3S..PR7...64M.~DBAAA_VS-LE.EAWD.99U.18D.PRE.%5D?intcmp=vhp-360cta-fbc&trim=st
+Ford Mustang,Mach E Premium,EV no incentive,51680,NA,300,NA,NA,NA,NA,NA,light grey seats,https://shop.ford.com/configure/mach-e/config/summary/Config%5B%7CFord%7CMache%7C2025%7C1%7C1.%7C300A.K3S..PR7...64M.~DBAAA_VS-LE.EAWD.99U.18D.PRE.%5D?intcmp=vhp-360cta-fbc&trim=st
 Ford Mustang,Mach E Select,EV no incentive,44080,NA,300,88,NA,NA,NA,NA,comfort package lite,NA
 Ford,Maverick XLT/Lariat,hybrid,36000,NA,NA,NA,NA,NA,NA,NA,NA,https://shop.ford.com/configure/maverick/config/summary/Config%5B%7CFord%7CMaverick%7C2025%7C1%7C1.%7C...PG4...63B.LAR.993.77F.VPZ6Z-99000C38-A.%5D?intcmp=vhp-seconNav-fbc
 Kia,EV6,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA

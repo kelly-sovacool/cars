@@ -1,0 +1,104 @@
+---
+title: "Car Costs"
+format:
+    html:
+        page-layout: full
+server: shiny
+execute:
+    message: false
+    warning: false
+---
+```{r}
+#| context: setup
+library(scales)
+library(tidyverse)
+theme_set(theme_bw())
+
+get_cars <- function(price_ICEV = 25000,
+                     mpg_ICEV = 25,
+                     gas_price_per_gal = 3,
+                     price_EV = 27500,
+                     battery_cap_kWh = 85,
+                     battery_range_mi = 319,
+                     energy_price_per_kWh = 0.25) {
+    dat <- data.frame(
+        car = c("Internal combustion engine vehicle (ICEV)", "Electric vehicle (EV)"),
+        purchase_cost = c(price_ICEV, price_EV),
+        cost_per_mile = c((gas_price_per_gal / mpg_ICEV),
+                          (battery_cap_kWh * energy_price_per_kWh / battery_range_mi)
+        )
+    )
+    return(dat)
+}
+calc_car_costs <- function(cars_dat,
+                          miles_start = 0,
+                          miles_stop = 100000,
+                          miles_step = 10000) {
+    dat <- seq(from = miles_start, to = miles_stop, by = miles_step) %>%
+        lapply(\(miles) {
+            cars_dat %>%
+                mutate(miles = miles,
+                       cost_at_mileage = purchase_cost + (miles * cost_per_mile))
+        }) %>%
+        bind_rows()
+    return(dat)
+}
+```
+
+::: {layout-ncol="2"}
+
+```{r}
+numericInput("price_ICEV", "ICEV purchase price", min=0, step=500, value=25000)
+numericInput("mpg_ICEV", "ICEV MPG",min=1,max=50, value=25)
+numericInput("gas_price_per_gal", "Gas price ($/gal)", min=1, value=3, step=0.10 )
+```
+
+```{r}
+numericInput("price_EV", "EV purchase price", min=0, step=500, value=27500)
+numericInput("battery_cap_kWh", "EV battery capacity (kWh)", min=1, max=100, value=85)
+numericInput("battery_range_mi", "EV battery range (miles)", min=1, step=1, value=319)
+numericInput("energy_price_per_kWh", "Electricity price ($/kWh",min=0,max=1, value=0.25, step=0.01)
+```
+
+:::
+
+```{r}
+#| panel: fill
+tableOutput('cars')
+plotOutput('car_costs_plot')
+#tableOutput('car_costs_dat')
+```
+
+
+```{r}
+#| context: server
+cars_dat <- reactive({
+    get_cars(
+        price_ICEV = input$price_ICEV,
+        mpg_ICEV = input$mpg_ICEV,
+        gas_price_per_gal = input$gas_price_per_gal,
+        price_EV = input$price_EV,
+        battery_cap_kWh = input$battery_cap_kWh,
+        battery_range_mi = input$battery_range_mi,
+        energy_price_per_kWh = input$energy_price_per_kWh
+    )
+})
+cars_costs_dat <- reactive({
+    cars_dat() %>% calc_car_costs()
+})
+
+output$cars <- renderTable(cars_dat())
+output$car_costs_plot <- renderPlot({
+    cars_costs_dat() %>% 
+        ggplot(aes(miles, cost_at_mileage, color = car, group = car)) +
+        geom_line() +
+        scale_color_brewer(palette = 'Dark2') +
+        #scale_color_viridis_d(option = 'viridis') +
+        scale_y_continuous(labels = label_currency()) +
+        guides(color = guide_legend(title = 'vehicle')) +
+        labs(x = '',
+             y = 'Total Cost')
+})
+#output$car_costs_dat <- renderTable(cars_costs_dat())
+```
+
