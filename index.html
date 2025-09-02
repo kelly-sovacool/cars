@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.7.34">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-08-24">
+<meta name="dcterms.date" content="2025-09-02">
 
 <title>cars</title>
 <style>
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="cars_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="cars_files/libs/quarto-html/anchor.min.js"></script>
 <link href="cars_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="cars_files/libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="cars_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="cars_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="cars_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="cars_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -93,7 +93,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 24, 2025</p>
+      <p class="date">September 2, 2025</p>
     </div>
   </div>
   
@@ -160,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cars <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>,<span class="st">'cars.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 11 Columns: 13
+<pre><code>Rows: 12 Columns: 13
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
 chr  (5): make, model, type, notes, links
@@ -178,12 +178,12 @@ dttm (1): test drive
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>energy_price_per_kwh <span class="ot">&lt;-</span> <span class="fl">0.25</span> <span class="co"># </span><span class="al">TODO</span><span class="co"> look up our actual rate in electricity bill</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>gas_price_per_gal <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co"># </span><span class="al">TODO</span><span class="co"> find gas price predictions</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>dav_commute_mi <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>dav_days_commute_per_week <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>dav_commute <span class="ot">&lt;-</span> <span class="dv">30</span> <span class="sc">*</span> <span class="dv">4</span> <span class="co"># mileage + trips per week</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>kel_a2_trips <span class="ot">&lt;-</span> <span class="fl">55.4</span> <span class="sc">/</span> <span class="dv">2</span> <span class="co"># A2 roundtrip once every two week</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>road_trips_year <span class="ot">&lt;-</span> <span class="dv">532</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">+</span> <span class="co"># indy</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">408</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">+</span> <span class="co"># columbus</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">580</span> <span class="sc">*</span> <span class="dv">1</span> <span class="co"># des plaines</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>mileage_per_week <span class="ot">&lt;-</span> dav_commute_mi <span class="sc">*</span> dav_days_commute_per_week <span class="sc">+</span> road_trips_year<span class="sc">/</span><span class="dv">52</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>mileage_per_week <span class="ot">&lt;-</span> dav_commute <span class="sc">+</span> kel_a2_trips <span class="sc">+</span> road_trips_year<span class="sc">/</span><span class="dv">52</span></span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>cars <span class="sc">%&lt;&gt;%</span> <span class="fu">mutate</span>(</span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">price_minus_incentives =</span> <span class="fu">case_when</span>(</span>
@@ -193,7 +193,7 @@ dttm (1): test drive
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> price_approx</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cost_per_mile =</span> <span class="fu">case_when</span>(</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        type <span class="sc">==</span> <span class="st">'EV'</span> <span class="sc">~</span> battery_kWh <span class="sc">*</span> energy_price_per_kwh <span class="sc">/</span> range_mi,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(type, <span class="st">'EV'</span>) <span class="sc">~</span> battery_kWh <span class="sc">*</span> energy_price_per_kwh <span class="sc">/</span> range_mi,</span>
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(type, <span class="st">'ICE'</span>) <span class="sc">~</span> gas_price_per_gal <span class="sc">/</span> mpg_combined</span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">make_model =</span> <span class="fu">glue</span>(<span class="st">"{make} {model}"</span>),</span>
@@ -242,6 +242,38 @@ dttm (1): test drive
 <div>
 <figure class="figure">
 <p><img src="cars_files/figure-html/plot_cost_time-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="car-cost-over-miles-driven" class="level2">
+<h2 class="anchored" data-anchor-id="car-cost-over-miles-driven">Car cost over miles driven</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>car_cost_over_miles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">100000</span>, <span class="at">by =</span> <span class="dv">10000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lapply</span>(\(miles) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        cars <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">miles=</span>miles,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cost_at_mileage =</span> purchase_cost <span class="sc">+</span> miles <span class="sc">*</span> cost_per_mile)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    }) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>()</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>car_cost_over_miles <span class="sc">%&gt;%</span> </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">make_model =</span> <span class="fu">factor</span>(make_model, <span class="at">levels =</span> vehicles)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(miles, cost_at_mileage, <span class="at">color =</span> make_model, <span class="at">group =</span> make_model)) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Dark2'</span>) <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#scale_color_viridis_d(option = 'viridis') +</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_currency</span>()) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">'vehicle'</span>)) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">''</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">'Total Cost'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cars_files/figure-html/plot_cost_miles-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
