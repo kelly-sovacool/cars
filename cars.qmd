@@ -13,7 +13,9 @@ execute:
 dpi: 300
 ---
 
-View interactive shiny app for general case: 
+[View the source {{< fa brands github >}}](https://github.com/kelly-sovacool/cars)
+
+Interactive shiny app for general ICEV vs EV comparisons: 
 <https://kelly-sovacool.shinyapps.io/car-costs/>
 
 ```{r setup}
