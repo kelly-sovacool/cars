@@ -19,4 +19,4 @@ jobs:
             rsconnect::setAccountInfo(name='kelly-sovacool',
                                       token='${{ secrets.SHINYAPPS_TOKEN }}',
                                       secret='${{ secrets.SHINYAPPS_SECRET }}')
-            rsconnect::deployApp('app.qmd', appName = 'car-costs', forceUpdate = TRUE)
+            rsconnect::deployApp(appPrimaryDoc = 'app.qmd', appName = 'car-costs', forceUpdate = TRUE)
