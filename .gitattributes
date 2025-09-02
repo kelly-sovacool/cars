@@ -1,2 +1,2 @@
-_extensions/ linguist-vendored=true
-data/ linguist-generated=true
+_extensions/** linguist-vendored=true
+data/** linguist-generated=true
