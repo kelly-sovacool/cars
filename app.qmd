@@ -10,6 +10,8 @@ execute:
 ---
 ```{r}
 #| context: setup
+library(glue)
+library(plotly)
 library(scales)
 library(tidyverse)
 theme_set(theme_bw())
@@ -33,7 +35,7 @@ get_cars <- function(price_ICEV = 25000,
 calc_car_costs <- function(cars_dat,
                           miles_start = 0,
                           miles_stop = 100000,
-                          miles_step = 10000) {
+                          miles_step = 1000) {
     dat <- seq(from = miles_start, to = miles_stop, by = miles_step) %>%
         lapply(\(miles) {
             cars_dat %>%
@@ -65,8 +67,7 @@ numericInput("energy_price_per_kWh", "Electricity price ($/kWh",min=0,max=1, val
 ```{r}
 #| panel: fill
 tableOutput('cars')
-plotOutput('car_costs_plot')
-#tableOutput('car_costs_dat')
+plotlyOutput('car_costs_plot')
 ```
 
 
@@ -88,17 +89,22 @@ cars_costs_dat <- reactive({
 })
 
 output$cars <- renderTable(cars_dat())
-output$car_costs_plot <- renderPlot({
-    cars_costs_dat() %>% 
-        ggplot(aes(miles, cost_at_mileage, color = car, group = car)) +
+output$car_costs_plot <- renderPlotly({
+    ggplotly(
+      cars_costs_dat() %>% 
+        mutate(label = glue("{car}\n{round(miles,0)}\n${round(cost_at_mileage,2)}")) %>% 
+        ggplot(aes(
+            miles, cost_at_mileage, color = car, group = car, label = label
+            )) +
         geom_line() +
         scale_color_brewer(palette = 'Dark2') +
-        #scale_color_viridis_d(option = 'viridis') +
         scale_y_continuous(labels = label_currency()) +
+        scale_x_continuous(labels = label_comma()) +
         guides(color = guide_legend(title = 'vehicle')) +
-        labs(x = '',
-             y = 'Total Cost')
+        labs(x = 'miles driven',
+             y = 'total cost'),
+      tooltip = 'label'
+    )
 })
-#output$car_costs_dat <- renderTable(cars_costs_dat())
 ```
 
