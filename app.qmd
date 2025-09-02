@@ -9,6 +9,8 @@ execute:
     warning: false
 ---
 
+[Source {{< fa brands github size=5x >}}](https://github.com/kelly-sovacool/cars)
+
 ```{r}
 #| context: setup
 library(glue)
