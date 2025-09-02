@@ -67,7 +67,7 @@ numericInput("energy_price_per_kWh", "Electricity price ($/kWh)",min=0,max=1, va
 
 :::
 
-## Fuel costs
+## Total cost of car ownership
 
 ```{r}
 #| panel: fill
