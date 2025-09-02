@@ -9,7 +9,7 @@ execute:
     warning: false
 ---
 
-[Source {{< fa brands github size=5x >}}](https://github.com/kelly-sovacool/cars)
+[View the source {{< fa brands github >}}](https://github.com/kelly-sovacool/cars)
 
 ```{r}
 #| context: setup
@@ -59,13 +59,15 @@ numericInput("gas_price_per_gal", "Gas price ($/gal)", min=1, value=3, step=0.10
 ```
 
 ```{r}
-numericInput("price_EV", "EV purchase price", min=0, step=500, value=27500)
+numericInput("price_EV", "EV purchase price", min=0, step=500, value=30000)
 numericInput("battery_cap_kWh", "EV battery capacity (kWh)", min=1, max=100, value=85)
 numericInput("battery_range_mi", "EV battery range (miles)", min=1, step=1, value=319)
-numericInput("energy_price_per_kWh", "Electricity price ($/kWh",min=0,max=1, value=0.25, step=0.01)
+numericInput("energy_price_per_kWh", "Electricity price ($/kWh)",min=0,max=1, value=0.20, step=0.01)
 ```
 
 :::
+
+## Operating costs
 
 ```{r}
 #| panel: fill
@@ -111,3 +113,11 @@ output$car_costs_plot <- renderPlotly({
 })
 ```
 
+## Assumptions
+
+- Flat gas price
+- Flat electricity price
+- Owner pays for all EV charging 
+  - In reality, many workplaces offer free EV charging
+- No maintenance costs beyond gas (for ICEV) or electricity (for EV)
+  - ICEVs will need regular oil changes. Both types of vehicles will need tire rotations and other routine or unexpected maintenance.
