@@ -38,12 +38,12 @@ ev_incentive <- 7500
 energy_price_per_kwh <- 0.25 # TODO look up our actual rate in electricity bill
 gas_price_per_gal <- 3 # TODO find gas price predictions
 
-dav_commute_mi <- 30
-dav_days_commute_per_week <- 4
+dav_commute <- 30 * 4 # mileage + trips per week
+kel_a2_trips <- 55.4 / 2 # A2 roundtrip once every two week
 road_trips_year <- 532 * 1 + # indy
     408 * 1 + # columbus
     580 * 1 # des plaines
-mileage_per_week <- dav_commute_mi * dav_days_commute_per_week + road_trips_year/52
+mileage_per_week <- dav_commute + kel_a2_trips + road_trips_year/52
 
 cars %<>% mutate(
     price_minus_incentives = case_when(
@@ -53,7 +53,7 @@ cars %<>% mutate(
         TRUE ~ price_approx
     ),
     cost_per_mile = case_when(
-        type == 'EV' ~ battery_kWh * energy_price_per_kwh / range_mi,
+        str_detect(type, 'EV') ~ battery_kWh * energy_price_per_kwh / range_mi,
         str_detect(type, 'ICE') ~ gas_price_per_gal / mpg_combined
     ),
     make_model = glue("{make} {model}"),
@@ -88,6 +88,28 @@ vehicles <- car_cost_over_time %>%
 car_cost_over_time %>% 
     mutate(make_model = factor(make_model, levels = vehicles)) %>% 
     ggplot(aes(date_week, total_cost, color = make_model, group = make_model)) +
+    geom_line() +
+    scale_color_brewer(palette = 'Dark2') +
+    #scale_color_viridis_d(option = 'viridis') +
+    scale_y_continuous(labels = label_currency()) +
+    guides(color = guide_legend(title = 'vehicle')) +
+    labs(x = '',
+         y = 'Total Cost')
+```
+
+## Car cost over miles driven
+
+```{r plot_cost_miles}
+car_cost_over_miles <- seq(from = 0, to = 100000, by = 10000) %>% 
+    lapply(\(miles) {
+        cars %>% 
+            mutate(miles=miles,
+                   cost_at_mileage = purchase_cost + miles * cost_per_mile)
+    }) %>% 
+    bind_rows()
+car_cost_over_miles %>% 
+    mutate(make_model = factor(make_model, levels = vehicles)) %>% 
+    ggplot(aes(miles, cost_at_mileage, color = make_model, group = make_model)) +
     geom_line() +
     scale_color_brewer(palette = 'Dark2') +
     #scale_color_viridis_d(option = 'viridis') +
