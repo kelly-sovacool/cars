@@ -12,6 +12,9 @@ execute:
 dpi: 300
 ---
 
+View interactive shiny app for general case: 
+<https://kelly-sovacool.shinyapps.io/car-costs/>
+
 ```{r setup}
 library(googlesheets4)
 library(glue)
