@@ -13,6 +13,9 @@ jobs:
         - uses: actions/checkout@v4
         - uses: r-lib/actions/setup-r@v2
         - uses: r-lib/actions/setup-r-dependencies@v2
+        - uses: quarto-dev/quarto-actions/render@v2
+          with:
+            path: app.qmd
         - name: deploy shiny app
           shell: Rscript {0}
           run: |
